@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de IMC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: #791515;
+            padding: 25px;
+            border-radius: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #631db3;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #1222b4;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Calculadora de IMC</h2>
+        <form id="imcForm">
+            <div class="form-group">
+                <label for="peso">Peso (kg):</label>
+                <input type="number" id="peso" step="0.1" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="altura">Altura (m):</label>
+                <input type="number" id="altura" step="0.01" required>
+            </div>
+            
+            <button type="submit">Calcular IMC</button>
+        </form>
+        
+        <div id="resultado"></div>
+    </div>
+
+    <script>
+        document.getElementById('imcForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const peso = parseFloat(document.getElementById('peso').value);
+            const altura = parseFloat(document.getElementById('altura').value);
+            if (altura > 3) {
+                alert('Por favor, insira a altura em metros (por exemplo, 1.86).');
+                return;
+            }
+            const imc = peso / (altura * 2);
+            document.getElementById('resultado').innerText = 'Seu IMC é: ' + imc.toFixed(2);
+        });
+    </script>
+</body>
+</html>
