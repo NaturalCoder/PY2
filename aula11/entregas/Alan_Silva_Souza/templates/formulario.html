@@ -27,6 +27,11 @@
             <input type="email" class="form-control" name="email" 
                    value="{{ contato.email if contato }}">
         </div>
+        <div class="mb-3">
+            <label class="form-label">Observação:</label>
+            <textarea class="form-control" name="observacao" required>{{ contato.observacao if contato else '' }}</textarea>
+        </div>
+
         <button type="submit" class="btn btn-primary">Salvar</button>
         <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancelar</a>
     </form>
