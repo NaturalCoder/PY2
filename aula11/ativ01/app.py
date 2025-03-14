@@ -1,8 +1,7 @@
 # Importações necessárias
 from flask import Flask, render_template, request, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy # type: ignore
 import re  # Para manipulação de strings
-
 # Configuração do aplicativo Flask
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///contatos.db'  # Banco de dados SQLite
@@ -17,8 +16,9 @@ class Contato(db.Model):
     """Modelo para representar um contato na agenda"""
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
-    telefone = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(100))
+    telefone = db.Column(db.String(20), nullable=False)
+    observacoes = db.Column(db.String(200), nullable = False)
 
     def __repr__(self):
         return f'<Contato {self.nome}>'
@@ -54,7 +54,8 @@ def adicionar_contato():
         novo_contato = Contato(
             nome=request.form['nome'],
             telefone=telefone_limpo,  # Salva apenas números
-            email=request.form['email']
+            email=request.form['email'],
+            observacoes=request.form['observacoes']
         )
         db.session.add(novo_contato)
         db.session.commit()
@@ -78,6 +79,7 @@ def editar_contato(id):
         contato.nome = request.form['nome']
         contato.telefone = telefone_limpo
         contato.email = request.form['email']
+        contato.observacoes = request.form['observacoes']
         db.session.commit()
         return redirect(url_for('index'))
     
@@ -108,12 +110,6 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Cria tabelas se não existirem
         
-        # Adiciona contatos iniciais para teste
-        if not Contato.query.first():
-            contatos_iniciais = [
-                Contato(nome='Prof. Daniel Mesquita', telefone='(45) 98431-8261', email='danielme17@gmail.com'),
-            ]
-            db.session.add_all(contatos_iniciais)
-            db.session.commit()
+               
     
     app.run(debug=True)
