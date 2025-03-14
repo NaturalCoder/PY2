@@ -23,20 +23,24 @@
         <thead>
             <tr>
                 <th>Nome</th>
-                <th>Telefone</th>
                 <th>E-mail</th>
+                <th>Telefone</th>
+                <th>Observações</th>
                 <th>Ações</th>
+                
             </tr>
         </thead>
         <tbody>
             {% for contato in contatos %}
             <tr>
                 <td>{{ contato.nome }}</td>
-                <td>{{ contato.telefone | format_telefone }}</td>
                 <td>{{ contato.email }}</td>
+                <td>{{ contato.telefone | format_telefone }}</td>
+                <td>{{ contato.observacoes}}</td>
+                
                 <td>
                     <a href="{{ url_for('editar_contato', id=contato.id) }}" class="btn btn-sm btn-warning">Editar</a>
-                    <a href="{{ url_for('excluir_contato', id=10) }}" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza?')">Excluir</a>
+                    <a href="{{ url_for('excluir_contato', id=contato.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza?')">Excluir</a>
                 </td>
             </tr>
             {% else %}
