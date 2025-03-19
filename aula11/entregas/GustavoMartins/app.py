@@ -86,7 +86,7 @@ def editar_contato(id):
         contato.nome = request.form['nome']
         contato.telefone = telefone_limpo
         contato.email = request.form['email'],
-        contato.observacoes = request.form["observacao"]  #NOVO CAMPO
+        contato.observacoes = request.form["observacao"],  #NOVO CAMPO
         db.session.commit()
         return redirect(url_for('index'))
     
