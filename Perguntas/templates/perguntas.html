@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center">
+    <h2 class="mb-4">Perguntas em Sala</h2>
+    
+    <div class="card mx-auto mb-4" style="max-width: 400px;">
+        <div class="card-body">
+            <h5 class="card-title">Aluno Selecionado</h5>
+            <p class="card-text display-6">{{ aluno.nome }}</p>
+            <p class="text-muted">Pontuação Atual: {{ aluno.pontos }}</p>
+        </div>
+    </div>
+
+    <div class="d-grid gap-2 d-md-block">
+        <a href="{{ url_for('atualizar_pontos', id=aluno.id, pontos=0) }}" 
+           class="btn btn-danger btn-lg m-1">
+            ❌ Errada (0)
+        </a>
+        <a href="{{ url_for('atualizar_pontos', id=aluno.id, pontos=1) }}" 
+           class="btn btn-warning btn-lg m-1">
+            ⚠ Parcial (1)
+        </a>
+        <a href="{{ url_for('atualizar_pontos', id=aluno.id, pontos=2) }}" 
+           class="btn btn-success btn-lg m-1">
+            ✔ Correta (2)
+        </a>
+    </div>
+
+    <div class="mt-4">
+        <a href="{{ url_for('listar_alunos') }}" class="btn btn-secondary mt-3">
+            Voltar para Listagem
+        </a>
+    </div>
+</div>
+{% endblock %}

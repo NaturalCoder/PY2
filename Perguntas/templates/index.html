@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Listagem de Alunos</h2>
+    <div class="d-flex justify-content-between mb-3">
+        <a href="{{ url_for('cadastrar_aluno') }}" class="btn btn-primary">Novo Aluno</a>
+        <div class="text-muted">
+            Ciclo de Perguntas: {{ respondidos }}/{{ total_alunos }} respondidos
+        </div>
+    </div>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Idade</th>
+                <th>Pontos</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for aluno in alunos %}
+            <tr>
+                <td>{{ aluno.nome }}</td>
+                <td>{{ aluno.email }}</td>
+                <td>{{ aluno.idade }}</td>
+                <td>{{ aluno.pontos }}</td>
+                <td>
+                    <a href="{{ url_for('editar_aluno', id=aluno.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="{{ url_for('excluir_aluno', id=aluno.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza?')">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
