@@ -1,9 +1,12 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 import random
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///alunos.db'
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'alunos.db')
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'sua_chave_secreta_super_segura'  # Chave para usar sessions
 
@@ -12,15 +15,47 @@ db = SQLAlchemy(app)
 class Aluno(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), unique=True, nullable=False)
-    idade = db.Column(db.Integer, nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=True)
+    idade = db.Column(db.Integer, nullable=True)
     pontos = db.Column(db.Integer, nullable=False, default=0)
 
     def __repr__(self):
         return f'<Aluno {self.nome}>'
 
+def cadastrar_alunos_iniciais():
+    alunos = [
+        {"nome": "Alan da Silva Faria"},
+        {"nome": "Alan da Silva Souza"},
+        {"nome": "Alexandre Pereira da Silva Junior"},
+        {"nome": "Gabriel Rosa Francisco"},
+        {"nome": "Gustavo Martins da Silva"},
+        {"nome": "Juan Molino Junior"},
+        {"nome": "Nickolas Henrique do Nascimento"},
+        {"nome": "Romulo Lopes Gonçalves"},
+        {"nome": "Vagner Henrique Pinto dos Santos"},
+        {"nome": "Victor da Silva Oliveira"},
+    ]
+
+    for aluno in alunos:
+        # Verifica se o aluno já existe no banco de dados
+        if not Aluno.query.filter_by(nome=aluno["nome"]).first():
+            novo_aluno = Aluno(
+                nome=aluno["nome"],
+                email=None,  # Email será null
+                idade=None,  # Idade será null
+                pontos=0      # Pontos iniciais como 0
+            )
+            db.session.add(novo_aluno)
+    
+    try:
+        db.session.commit()
+        print("Alunos cadastrados com sucesso!")
+    except Exception as e:
+        print(f"Erro ao cadastrar alunos: {e}")
+        
 with app.app_context():
     db.create_all()
+    cadastrar_alunos_iniciais()
 
 @app.route('/')
 def listar_alunos():
@@ -102,6 +137,7 @@ def atualizar_pontos(id, pontos):
         return redirect(url_for('perguntas_sala'))
     except:
         return 'Erro ao atualizar pontos!'
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
