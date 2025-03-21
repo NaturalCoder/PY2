@@ -78,7 +78,7 @@ def cadastrar_aluno():
         try:
             db.session.add(novo_aluno)
             db.session.commit()
-            return redirect(url_for('listar_alunos'))
+            return 'OK cadastrado'
         except:
             return 'Erro ao cadastrar aluno!'
     return render_template('cadastrar.html')
