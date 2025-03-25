@@ -1,19 +1,3 @@
-var tarefas = [];
-
-function carregaDados() {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', '/api', false); // false = síncrono
-    xhr.send();
-
-    if (xhr.status === 200) {
-        tarefas = JSON.parse(xhr.responseText) || [];
-    } else {
-        console.error('Erro:', xhr.statusText);
-    }
-}
-
-carregaDados();
-
 function adicionarTarefa() 
 {
     const nomeInput = document.getElementById('nomeTarefa');

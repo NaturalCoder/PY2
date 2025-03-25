@@ -131,7 +131,9 @@
     </div>
 
     <div class="lista-tarefas" id="listaTarefas"></div>
-
+    <script> 
+        var tarefas = JSON.parse({{json1 | tojson | safe }}) || [];
+    </script>
     <script src="/static/script.js"></script>
 </body>
 </html>

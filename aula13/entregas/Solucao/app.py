@@ -25,25 +25,20 @@ with app.app_context():
 
 @app.route('/')
 def home():
-    return render_template('tarefas.html')
+    tarefa = Tarefa.query.get(0)
+    json1 = tarefa.dados.decode('utf-8')
+    return render_template('tarefas.html', json1=json1)
 
 
 @app.route('/api', methods=['GET', 'POST'])
 def api():
-    if request.method == 'POST':
-        # request.form[0]
-        # request.form['descricaoTarefa']
-        # request.form['duracaoTarefa']
-        tarefa = Tarefa.query.get(0)
-        tarefa.dados = request.data
-        
-        try:
-            db.session.commit()
-            return { 'result': 'OK cadastrado' }
-        except:
-            return { 'result': 'Erro ao cadastrar tarefa' }
-    else:
-        tarefa = Tarefa.query.get(0)
-        return tarefa.dados
+    tarefa = Tarefa.query.get(0)
+    tarefa.dados = request.data
+    
+    try:
+        db.session.commit()
+        return { 'result': 'OK cadastrado' }
+    except:
+        return { 'result': 'Erro ao cadastrar tarefa' }
 
 app.run(debug=True)
