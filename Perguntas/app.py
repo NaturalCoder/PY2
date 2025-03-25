@@ -22,17 +22,15 @@ class Aluno(db.Model):
     def __repr__(self):
         return f'<Aluno {self.nome}>'
 
-# Adicione este novo modelo após a classe Aluno
 class RegistroPontuacao(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     aluno_id = db.Column(db.Integer, db.ForeignKey('aluno.id'), nullable=False)
     pontos_alterados = db.Column(db.Integer, nullable=False)
     ip = db.Column(db.String(50), nullable=False)
     data_hora = db.Column(db.DateTime, default=datetime.utcnow)
-    responsavel = db.Column(db.String(100))  # Poderia ser vinculado a um usuário no futuro
+    responsavel = db.Column(db.String(100))
 
     aluno = db.relationship('Aluno', backref=db.backref('registros', lazy=True))
-
 
 def cadastrar_alunos_iniciais():
     alunos = [
@@ -89,26 +87,49 @@ def cadastrar_aluno():
         
         try:
             db.session.add(novo_aluno)
+            
+            if novo_aluno.pontos != 0:
+                registro = RegistroPontuacao(
+                    aluno_id=novo_aluno.id,
+                    pontos_alterados=novo_aluno.pontos,
+                    ip=request.remote_addr,
+                    responsavel='Cadastro inicial'
+                )
+                db.session.add(registro)
+                
             db.session.commit()
-            return 'OK cadastrado'
-        except:
-            return 'Erro ao cadastrar aluno!'
+            return redirect(url_for('listar_alunos'))
+        except Exception as e:
+            db.session.rollback()
+            return f'Erro ao cadastrar aluno: {str(e)}'
     return render_template('cadastrar.html')
 
 @app.route('/editar/<int:id>', methods=['GET', 'POST'])
 def editar_aluno(id):
     aluno = Aluno.query.get_or_404(id)
     if request.method == 'POST':
+        pontos_antigos = aluno.pontos
         aluno.nome = request.form['nome']
         aluno.email = request.form['email']
         aluno.idade = int(request.form['idade'])
-        aluno.pontos = int(request.form['pontos'])
+        novos_pontos = int(request.form['pontos'])
+        diferenca = novos_pontos - pontos_antigos
+        aluno.pontos = novos_pontos
         
         try:
+            if diferenca != 0:
+                novo_registro = RegistroPontuacao(
+                    aluno_id=id,
+                    pontos_alterados=diferenca,
+                    ip=request.remote_addr,
+                    responsavel='Edição manual'
+                )
+                db.session.add(novo_registro)
             db.session.commit()
             return redirect(url_for('listar_alunos'))
-        except:
-            return 'Erro ao atualizar aluno!'
+        except Exception as e:
+            db.session.rollback()
+            return f'Erro ao atualizar aluno: {str(e)}'
     return render_template('editar.html', aluno=aluno)
 
 @app.route('/excluir/<int:id>')
@@ -118,8 +139,9 @@ def excluir_aluno(id):
         db.session.delete(aluno)
         db.session.commit()
         return redirect(url_for('listar_alunos'))
-    except:
-        return 'Erro ao excluir aluno!'
+    except Exception as e:
+        db.session.rollback()
+        return f'Erro ao excluir aluno: {str(e)}'
 
 @app.route('/perguntas', methods=['GET', 'POST'])
 def perguntas_sala():
@@ -155,15 +177,15 @@ def atualizar_pontos(id, pontos):
         db.session.add(novo_registro)
         db.session.commit()
         return redirect(url_for('perguntas_sala'))
-    except:
-        return 'Erro ao atualizar pontos!'
+    except Exception as e:
+        db.session.rollback()
+        return f'Erro ao atualizar pontos: {str(e)}'
     
 @app.route('/adicionar_ponto/<int:id>', methods=['POST'])
 def adicionar_ponto(id):
     aluno = Aluno.query.get_or_404(id)
     aluno.pontos += 1
     
-    # Registra a alteração no log
     novo_registro = RegistroPontuacao(
         aluno_id=id,
         pontos_alterados=1,
@@ -176,13 +198,13 @@ def adicionar_ponto(id):
         db.session.commit()
         return redirect(url_for('listar_alunos'))
     except Exception as e:
+        db.session.rollback()
         return f'Erro ao atualizar pontos: {str(e)}'
 
 @app.route('/log_pontos')
 def log_pontos():
     registros = RegistroPontuacao.query.order_by(RegistroPontuacao.data_hora.desc()).all()
     return render_template('log_pontos.html', registros=registros)
-
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
