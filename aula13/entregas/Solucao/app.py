@@ -26,8 +26,7 @@ with app.app_context():
 @app.route('/')
 def home():
     tarefa = Tarefa.query.get(0)
-    json1 = tarefa.dados.decode('utf-8')
-    return render_template('tarefas.html', json1=json1)
+    return render_template('tarefas.html', json1=tarefa.dados.decode('utf-8'))
 
 
 @app.route('/api', methods=['GET', 'POST'])
