@@ -1,12 +1,12 @@
-import os
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 import random
+import os
 
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'alunos.db')
-
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'sua_chave_secreta_super_segura'  # Chave para usar sessions
 
@@ -21,6 +21,18 @@ class Aluno(db.Model):
 
     def __repr__(self):
         return f'<Aluno {self.nome}>'
+
+# Adicione este novo modelo após a classe Aluno
+class RegistroPontuacao(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    aluno_id = db.Column(db.Integer, db.ForeignKey('aluno.id'), nullable=False)
+    pontos_alterados = db.Column(db.Integer, nullable=False)
+    ip = db.Column(db.String(50), nullable=False)
+    data_hora = db.Column(db.DateTime, default=datetime.utcnow)
+    responsavel = db.Column(db.String(100))  # Poderia ser vinculado a um usuário no futuro
+
+    aluno = db.relationship('Aluno', backref=db.backref('registros', lazy=True))
+
 
 def cadastrar_alunos_iniciais():
     alunos = [
@@ -132,12 +144,45 @@ def atualizar_pontos(id, pontos):
     aluno = Aluno.query.get_or_404(id)
     aluno.pontos += pontos
     
+    novo_registro = RegistroPontuacao(
+        aluno_id=id,
+        pontos_alterados=pontos,
+        ip=request.remote_addr,
+        responsavel='Sistema de perguntas'
+    )
+    
     try:
+        db.session.add(novo_registro)
         db.session.commit()
         return redirect(url_for('perguntas_sala'))
     except:
         return 'Erro ao atualizar pontos!'
     
+@app.route('/adicionar_ponto/<int:id>', methods=['POST'])
+def adicionar_ponto(id):
+    aluno = Aluno.query.get_or_404(id)
+    aluno.pontos += 1
+    
+    # Registra a alteração no log
+    novo_registro = RegistroPontuacao(
+        aluno_id=id,
+        pontos_alterados=1,
+        ip=request.remote_addr,
+        responsavel='Ação rápida via listagem'
+    )
+    
+    try:
+        db.session.add(novo_registro)
+        db.session.commit()
+        return redirect(url_for('listar_alunos'))
+    except Exception as e:
+        return f'Erro ao atualizar pontos: {str(e)}'
+
+@app.route('/log_pontos')
+def log_pontos():
+    registros = RegistroPontuacao.query.order_by(RegistroPontuacao.data_hora.desc()).all()
+    return render_template('log_pontos.html', registros=registros)
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)

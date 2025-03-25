@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Histórico de Alterações de Pontos</h2>
+    <a href="{{ url_for('listar_alunos') }}" class="btn btn-secondary mb-3">Voltar</a>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Data/Hora</th>
+                <th>Aluno</th>
+                <th>Pontos Alterados</th>
+                <th>IP</th>
+                <th>Responsável</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for registro in registros %}
+            <tr>
+                <td>{{ registro.data_hora.strftime('%d/%m/%Y %H:%M') }}</td>
+                <td>{{ registro.aluno.nome }}</td>
+                <td class="{{ 'text-success' if registro.pontos_alterados > 0 else 'text-danger' }}">
+                    {{ registro.pontos_alterados }}
+                </td>
+                <td>{{ registro.ip }}</td>
+                <td>{{ registro.responsavel }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

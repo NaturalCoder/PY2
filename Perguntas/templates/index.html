@@ -3,7 +3,10 @@
 {% block content %}
     <h2>Listagem de Alunos</h2>
     <div class="d-flex justify-content-between mb-3">
-        <a href="{{ url_for('cadastrar_aluno') }}" class="btn btn-primary">Novo Aluno</a>
+        <div>
+            <a href="{{ url_for('cadastrar_aluno') }}" class="btn btn-primary">Novo Aluno</a>
+            <a href="{{ url_for('log_pontos') }}" class="btn btn-info ms-2">Ver Histórico</a>
+        </div>
         <div class="text-muted">
             Ciclo de Perguntas: {{ respondidos }}/{{ total_alunos }} respondidos
         </div>
@@ -23,9 +26,14 @@
             {% for aluno in alunos %}
             <tr>
                 <td>{{ aluno.nome }}</td>
-                <td>{{ aluno.email }}</td>
-                <td>{{ aluno.idade }}</td>
-                <td>{{ aluno.pontos }}</td>
+                <td>{{ aluno.email or '-' }}</td>
+                <td>{{ aluno.idade or '-' }}</td>
+                <td>
+                    {{ aluno.pontos }}
+                    <form action="{{ url_for('adicionar_ponto', id=aluno.id) }}" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-success ms-2">+1</button>
+                    </form>
+                </td>
                 <td>
                     <a href="{{ url_for('editar_aluno', id=aluno.id) }}" class="btn btn-sm btn-warning">Editar</a>
                     <a href="{{ url_for('excluir_aluno', id=aluno.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza?')">Excluir</a>
