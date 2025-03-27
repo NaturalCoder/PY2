@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Cadastro</h2>
+<form method="POST">
+    <label for="name">Nome:</label>
+    <input type="text" id="name" name="name" required>
+    
+    <label for="email">E-mail:</label>
+    <input type="email" id="email" name="email" required>
+    
+    <label for="phone">Telefone:</label>
+    <input type="tel" id="phone" name="phone">
+    
+    <label for="password">Senha:</label>
+    <input type="password" id="password" name="password" required>
+    
+    <button type="submit">Cadastrar</button>
+</form>
+<p>Já tem conta? <a href="{{ url_for('login') }}">Faça login</a></p>
+{% endblock %}
