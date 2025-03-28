@@ -9,11 +9,10 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    <h1>ReuniOn</h1>
     <header class="main-header">
         <div class="header-container">
-            <a href="{{ url_for('dashboard') }}" class="logo">
-                <h1>ReuniOn</h1>
-            </a>
+            <a href="{{ url_for('dashboard') }}" class="logo"></a>
             <nav class="main-nav">
                 {% if 'user_id' in session %}
                     <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>

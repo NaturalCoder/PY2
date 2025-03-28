@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from sqlalchemy import func, or_
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -44,7 +45,7 @@ class Meeting(db.Model):
     date = db.Column(db.DateTime, nullable=False)
     description = db.Column(db.Text)
     creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    
+    creator = db.relationship('User', foreign_keys=[creator_id])
     participants = db.relationship('User', secondary='meeting_participants')
 
 meeting_participants = db.Table('meeting_participants',
@@ -232,6 +233,61 @@ def add_meeting():
     flash('Reunião agendada com sucesso!', 'success')
     return redirect(url_for('dashboard'))
 
+@app.route('/get-meetings')
+def get_meetings():
+    try:
+        if 'user_id' not in session:
+            return jsonify({'success': False, 'error': 'Usuário não autenticado'}), 401
+        
+        date_str = request.args.get('date')
+        if not date_str:
+            return jsonify({'success': False, 'error': 'Parâmetro date faltando'}), 400
+
+        # Verifica se a data é válida
+        try:
+            date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
+        except ValueError:
+            return jsonify({'success': False, 'error': 'Formato de data inválido. Use YYYY-MM-DD'}), 400
+        
+        # Consulta otimizada
+        meetings = Meeting.query.filter(
+            db.func.date(Meeting.date) == date_obj,
+            db.or_(
+                Meeting.creator_id == session['user_id'],
+                Meeting.participants.any(id=session['user_id'])
+            )
+        ).options(
+            db.joinedload(Meeting.creator),
+            db.joinedload(Meeting.participants)
+        ).all()
+
+        # Prepara os dados para serialização
+        meetings_data = []
+        for meeting in meetings:
+            meetings_data.append({
+                'id': meeting.id,
+                'title': meeting.title,
+                'time': meeting.date.strftime('%H:%M'),
+                'description': meeting.description or '',
+                'creator': meeting.creator.name,
+                'is_creator': meeting.creator_id == session['user_id'],
+                'participants': [{'id': p.id, 'name': p.name} for p in meeting.participants]
+            })
+
+        return jsonify({
+            'success': True,
+            'meetings': meetings_data,
+            'date': date_str
+        })
+
+    except Exception as e:
+        app.logger.error(f"Erro em get_meetings: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Erro interno no servidor',
+            'details': str(e)
+        }), 500
+    
 @app.route('/meeting/delete/<int:id>')
 def delete_meeting(id):
     if 'user_id' not in session:

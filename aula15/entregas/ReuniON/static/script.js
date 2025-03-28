@@ -1,143 +1,179 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Elementos dos modais
-    const formModal = document.getElementById('form-modal');
-    const meetingsModal = document.getElementById('meetings-modal');
-    const closeButtons = document.querySelectorAll('.close');
+    // Elementos principais
+    const addModal = document.getElementById('form-modal');
+    const meetingsModal = createMeetingsModal();
+    document.body.appendChild(meetingsModal);
     
-    // Modal de agendamento
-    const setupAddEventButtons = () => {
+    // Botões de fechar
+    const closeButtons = {
+        add: document.querySelector('.close'),
+        meetings: document.querySelector('.close-meetings')
+    };
+
+    // Inicialização
+    initModals();
+    initCalendarInteractions();
+    initMeetingDeletion();
+
+    // Funções de inicialização
+    function createMeetingsModal() {
+        const modal = document.createElement('div');
+        modal.id = 'meetings-modal';
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <span class="close-meetings">&times;</span>
+                <h3>Reuniões do Dia</h3>
+                <div id="meetings-list"></div>
+            </div>
+        `;
+        return modal;
+    }
+
+    function initModals() {
+        // Fechar modais ao clicar nos botões ×
+        closeButtons.add.onclick = () => addModal.style.display = 'none';
+        closeButtons.meetings.onclick = () => meetingsModal.style.display = 'none';
+        
+        // Fechar modais ao clicar fora
+        window.onclick = function(event) {
+            if (event.target === addModal) addModal.style.display = 'none';
+            if (event.target === meetingsModal) meetingsModal.style.display = 'none';
+        };
+    }
+
+    function initCalendarInteractions() {
+        // Botão para adicionar reunião
         document.querySelectorAll('.add-event').forEach(button => {
             button.addEventListener('click', function(e) {
                 e.stopPropagation();
                 const day = this.getAttribute('data-day');
                 const currentDate = new Date();
-                const formattedDate = `${currentDate.getFullYear()}-${(currentDate.getMonth()+1).toString().padStart(2,'0')}-${day.padStart(2,'0')}`;
+                const formattedDate = formatDate(currentDate, day);
                 document.getElementById('event-date').value = formattedDate;
-                formModal.style.display = 'block';
+                addModal.style.display = 'block';
             });
         });
-    };
 
-    // Modal de visualização de reuniões
-    const setupDayClickHandlers = () => {
+        // Células do calendário para mostrar reuniões
         document.querySelectorAll('td').forEach(cell => {
-            const dayElement = cell.querySelector('.day');
-            if (dayElement) {
-                cell.addEventListener('click', function() {
-                    const day = dayElement.textContent;
-                    const currentDate = new Date();
-                    const dateStr = `${currentDate.getFullYear()}-${(currentDate.getMonth()+1).toString().padStart(2,'0')}-${day.padStart(2,'0')}`;
-                    
-                    fetch(`/get-meetings?date=${dateStr}`)
-                        .then(response => {
-                            if (!response.ok) throw new Error('Erro na requisição');
-                            return response.json();
-                        })
-                        .then(meetings => {
-                            renderMeetings(meetings, day, currentDate);
-                        })
-                        .catch(error => {
-                            console.error('Erro:', error);
-                            alert('Erro ao carregar reuniões');
-                        });
+            if (cell.querySelector('.day')) {
+                cell.addEventListener('click', function(e) {
+                    if (!e.target.classList.contains('add-event')) {
+                        const day = cell.querySelector('.day').textContent;
+                        const formattedDate = formatDate(new Date(), day);
+                        loadMeetings(formattedDate);
+                    }
                 });
             }
         });
-    };
+    }
 
-    // Renderizar reuniões no modal
-    const renderMeetings = (meetings, day, currentDate) => {
-        const meetingsList = document.getElementById('meetings-list');
-        meetingsList.innerHTML = '';
-        
-        if (meetings.length > 0) {
-            meetings.forEach(meeting => {
-                const meetingEl = document.createElement('div');
-                meetingEl.className = 'meeting-item';
-                meetingEl.innerHTML = `
-                    <div class="meeting-header">
-                        <h4>${meeting.title}</h4>
-                        <span class="meeting-time">${meeting.time}</span>
-                    </div>
-                    <div class="meeting-details">
-                        ${meeting.location ? `<p><strong>Local:</strong> ${meeting.location}</p>` : ''}
-                        ${meeting.participants.length ? `<p><strong>Participantes:</strong> ${meeting.participants.join(', ')}</p>` : ''}
-                    </div>
-                    <div class="meeting-actions">
-                        <button class="btn-delete" onclick="deleteMeeting(${meeting.id})">
-                            Cancelar Reunião
-                        </button>
-                    </div>
-                `;
-                meetingsList.appendChild(meetingEl);
-            });
-        } else {
-            meetingsList.innerHTML = '<div class="no-meetings">Nenhuma reunião agendada para este dia</div>';
-        }
-        
-        document.getElementById('selected-date').textContent = 
-            `Reuniões em ${day.padStart(2,'0')}/${(currentDate.getMonth()+1).toString().padStart(2,'0')}`;
-        meetingsModal.style.display = 'block';
-    };
-
-    // Fechar modais
-    const setupCloseHandlers = () => {
-        closeButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
-                formModal.style.display = 'none';
-                meetingsModal.style.display = 'none';
-            });
-        });
-
-        window.addEventListener('click', function(event) {
-            if (event.target === formModal || event.target === meetingsModal) {
-                formModal.style.display = 'none';
-                meetingsModal.style.display = 'none';
+    function initMeetingDeletion() {
+        // Deleção dinâmica (para elementos carregados via AJAX)
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('delete-btn')) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (confirm('Cancelar esta reunião?')) {
+                    const meetingId = e.target.dataset.id;
+                    deleteMeeting(meetingId, e.target.closest('.meeting-item'));
+                }
             }
         });
-    };
+    }
 
-    // Função para deletar reunião (disponível globalmente)
-    window.deleteMeeting = function(id) {
-        if (confirm('Tem certeza que deseja cancelar esta reunião?')) {
-            fetch(`/meeting/delete/${id}`, { 
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCSRFToken()
-                }
-            })
+    // Funções utilitárias
+    function formatDate(date, day) {
+        return `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2,'0')}-${day.padStart(2,'0')}`;
+    }
+
+    function loadMeetings(date) {
+        fetch(`/get-meetings?date=${date}`)
             .then(response => {
-                if (response.ok) {
-                    location.reload();
-                } else {
-                    alert('Erro ao cancelar reunião');
+                if (!response.ok) {
+                    return response.json().then(err => { throw new Error(err.error || 'Erro na rede'); });
                 }
+                return response.json();
+            })
+            .then(data => {
+                if (!data.success) throw new Error(data.error || 'Erro desconhecido');
+                displayMeetings(data.meetings);
             })
             .catch(error => {
-                console.error('Error:', error);
-                alert('Erro ao cancelar reunião');
+                console.error('Erro:', error);
+                alert('Erro: ' + error.message);
             });
+    }
+
+    function displayMeetings(meetings) {
+        const meetingsList = document.getElementById('meetings-list');
+        
+        if (meetings && meetings.length > 0) {
+            meetingsList.innerHTML = meetings.map(meeting => `
+                <div class="meeting-item ${meeting.is_creator ? 'creator' : ''}">
+                    <h4>${meeting.title} 
+                        ${meeting.is_creator ? 
+                            `<button class="delete-btn" data-id="${meeting.id}">×</button>` : ''}
+                    </h4>
+                    <p><strong>Horário:</strong> ${meeting.time}</p>
+                    ${meeting.description ? `<p><strong>Descrição:</strong> ${meeting.description}</p>` : ''}
+                    <p><strong>Criador:</strong> ${meeting.creator}</p>
+                    <p><strong>Participantes:</strong> 
+                        ${meeting.participants.map(p => p.name).join(', ')}
+                    </p>
+                </div>
+            `).join('');
+        } else {
+            meetingsList.innerHTML = '<p class="no-meetings">Nenhuma reunião agendada para este dia.</p>';
         }
-    };
+        
+        document.getElementById('meetings-modal').style.display = 'block';
+    }
 
-    // Obter token CSRF (proteção contra ataques)
-    const getCSRFToken = () => {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]');
-        return csrfToken ? csrfToken.content : '';
-    };
+    function deleteMeeting(meetingId, element) {
+        fetch(`/meeting/delete/${meetingId}`, {
+            method: 'GET'
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Erro ao cancelar reunião');
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                element.remove();
+                // Atualiza o calendário se necessário
+                const currentDate = document.querySelector('#meetings-modal .modal-content h3')
+                    .textContent.replace('Reuniões do Dia ', '');
+                loadMeetings(currentDate);
+            } else {
+                throw new Error(data.error || 'Erro ao cancelar reunião');
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert(error.message);
+        });
+    }
 
-    // Inicialização
-    setupAddEventButtons();
-    setupDayClickHandlers();
-    setupCloseHandlers();
-
-    // Destacar dias com reuniões
-    highlightDaysWithMeetings();
+    // Atualiza o calendário com eventos existentes
+    function highlightMeetings() {
+        fetch('/get-meetings?month=current')  // Você precisará criar esta rota
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    data.meetings.forEach(meeting => {
+                        const date = new Date(meeting.date);
+                        const dayCell = document.querySelector(`td:has(.day:contains("${date.getDate()}"))`);
+                        if (dayCell) {
+                            dayCell.classList.add('has-meeting');
+                        }
+                    });
+                }
+            });
+    }
+    
+    // Inicializa a marcação de reuniões no calendário
+    highlightMeetings();
 });
-
-// Função para destacar dias com reuniões
-function highlightDaysWithMeetings() {
-    // Esta função pode ser preenchida com lógica para destacar dias
-    // Exemplo: adicionar classe 'has-meetings' aos dias com eventos
-}
