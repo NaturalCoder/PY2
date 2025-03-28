@@ -187,7 +187,7 @@ def dashboard():
     ).all()
     
     return render_template('dashboard.html',
-                         user_log=user,
+                         user=user,
                          calendar=cal,
                          year=year,
                          month=month,
