@@ -3,10 +3,6 @@ from wtforms import StringField, BooleanField, SubmitField, DateField, FileField
 from wtforms.validators import DataRequired, Email, Length, Optional, ValidationError
 from validate_docbr import CPF
 
-# Validador customizado de CPF usando a regra matemática nacional
-# ✔️ Usamos a validação matemática oficial do CPF: é a mesma regra ensinada pela Receita Federal
-# ✔️ É permitido, seguro e aplicável no backend
-# ✔️ Não depende de consulta externa e segue o padrão nacional para CPF válido
 def validar_cpf(form, field):
     cpf_validador = CPF()
     if not cpf_validador.validate(field.data):
@@ -26,24 +22,31 @@ class CandidatoForm(FlaskForm):
     data_nascimento = DateField("Data de Nascimento", format="%Y-%m-%d", validators=[Optional()])
     nome_mae = StringField("Nome da Mãe", validators=[Optional()])
     nome_pai = StringField("Nome do Pai", validators=[Optional()])
-    parente_na_temon = StringField("Parente na Temon", validators=[Optional()])
-    estado_civil = StringField("Estado Civil", validators=[Optional()])
+    parente_na_temon = SelectField("Parente na Temon", choices=[("Sim", "Sim"), ("Não", "Não")])
+    nome_parente = StringField("Nome do Parente", validators=[Optional()])
+    setor_parente = StringField("Setor do Parente", validators=[Optional()])
+    estado_civil = SelectField("Estado Civil", choices=[
+        ("Solteiro(a)", "Solteiro(a)"), ("Casado(a)", "Casado(a)"),
+        ("Divorciado(a)", "Divorciado(a)"), ("Viúvo(a)", "Viúvo(a)")
+    ])
     cor = StringField("Cor", validators=[Optional()])
     endereco = StringField("Endereço", validators=[Optional()])
     bairro = StringField("Bairro", validators=[Optional()])
     cidade_estado = StringField("Cidade e Estado", validators=[Optional()])
     cep = StringField("CEP", validators=[Optional()])
     regiao = StringField("Região", validators=[Optional()])
-    estuda = StringField("Estuda?", validators=[Optional()])
+    estuda = SelectField("Estuda?", choices=[("Sim", "Sim"), ("Não", "Não")])
+    curso = StringField("Curso", validators=[Optional()])
+    periodo = StringField("Período", validators=[Optional()])
     possui_deficiencia = StringField("Possui deficiência?", validators=[Optional()])
     descricao_deficiencia = StringField("Descrição da deficiência e CID", validators=[Optional()])
     data_emissao_rg = DateField("Data de Emissão do RG", format="%Y-%m-%d", validators=[Optional()])
     estado_expedidor_rg = StringField("Estado Expedidor do RG", validators=[Optional()])
 
-    carteira_trabalho = FileField("Carteira de Trabalho (PDF)", validators=[Optional()])
-    certificacao_eletricista = FileField("Certificado Eletricista (PDF)", validators=[Optional()])
-    certificacao_mecanico = FileField("Certificado Mecânico (PDF)", validators=[Optional()])
-    certificado_nr10 = FileField("Certificado NR-10 (PDF)", validators=[Optional()])
+    carteira_trabalho = FileField("Carteira de Trabalho", validators=[Optional()])
+    certificacao_eletricista = FileField("Certificado Eletricista", validators=[Optional()])
+    certificacao_mecanico = FileField("Certificado Mecânico", validators=[Optional()])
+    certificado_nr10 = FileField("Certificado NR-10", validators=[Optional()])
 
     horario_diurno = SelectField("Aceita horário diurno?", choices=[("Sim", "Sim"), ("Não", "Não")])
     horario_noturno = SelectField("Aceita horário noturno?", choices=[("Sim", "Sim"), ("Não", "Não")])

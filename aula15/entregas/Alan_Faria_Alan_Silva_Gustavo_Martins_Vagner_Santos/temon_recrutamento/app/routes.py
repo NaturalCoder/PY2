@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for, current_app
 from app.models import db, Candidato
-import os
-from datetime import datetime
+from app.forms import CandidatoForm
 from werkzeug.utils import secure_filename
+from datetime import datetime
+import os
 import time
 
 app = Blueprint("app", __name__)
@@ -11,20 +12,19 @@ def salvar_arquivo(arquivo):
     if arquivo and arquivo.filename:
         filename = secure_filename(arquivo.filename)
         timestamp = str(int(time.time()))
-        upload_folder = current_app.config.get("UPLOAD_FOLDER", "uploads")
-        caminho = os.path.join(upload_folder, f"{timestamp}_{filename}")
-        os.makedirs(upload_folder, exist_ok=True)
-        arquivo.save(caminho)
-        return caminho
+        pasta_uploads = current_app.config.get("UPLOAD_FOLDER", "uploads")
+        os.makedirs(pasta_uploads, exist_ok=True)
+        caminho_completo = os.path.join(pasta_uploads, f"{timestamp}_{filename}")
+        arquivo.save(caminho_completo)
+        return caminho_completo
     return None
 
 @app.route("/", methods=["GET", "POST"])
 def formulario():
-    from app.forms import CandidatoForm
     form = CandidatoForm()
 
     if form.validate_on_submit():
-        novo_candidato = Candidato(
+        candidato = Candidato(
             nome=form.nome.data,
             email=form.email.data,
             cpf=form.cpf.data,
@@ -39,6 +39,8 @@ def formulario():
             nome_mae=form.nome_mae.data,
             nome_pai=form.nome_pai.data,
             parente_na_temon=form.parente_na_temon.data,
+            parente_nome=form.parente_nome.data,
+            parente_setor=form.parente_setor.data,
             estado_civil=form.estado_civil.data,
             cor=form.cor.data,
             endereco=form.endereco.data,
@@ -47,6 +49,8 @@ def formulario():
             cep=form.cep.data,
             regiao=form.regiao.data,
             estuda=form.estuda.data,
+            curso=form.curso.data,
+            periodo=form.periodo.data,
             possui_deficiencia=form.possui_deficiencia.data,
             descricao_deficiencia=form.descricao_deficiencia.data,
             data_emissao_rg=form.data_emissao_rg.data,
@@ -60,7 +64,8 @@ def formulario():
             finais_semana=form.finais_semana.data,
             autorizo_dados=form.autorizo_dados.data
         )
-        db.session.add(novo_candidato)
+
+        db.session.add(candidato)
         db.session.commit()
         return redirect(url_for("app.confirmacao"))
 
