@@ -11,7 +11,9 @@ def salvar_arquivo(arquivo):
     if arquivo and arquivo.filename:
         filename = secure_filename(arquivo.filename)
         timestamp = str(int(time.time()))
-        caminho = os.path.join(current_app.config["UPLOAD_FOLDER"], f"{timestamp}_{filename}")
+        upload_folder = current_app.config.get("UPLOAD_FOLDER", "uploads")
+        caminho = os.path.join(upload_folder, f"{timestamp}_{filename}")
+        os.makedirs(upload_folder, exist_ok=True)
         arquivo.save(caminho)
         return caminho
     return None
@@ -20,7 +22,7 @@ def salvar_arquivo(arquivo):
 def formulario():
     from app.forms import CandidatoForm
     form = CandidatoForm()
-    
+
     if form.validate_on_submit():
         novo_candidato = Candidato(
             nome=form.nome.data,
