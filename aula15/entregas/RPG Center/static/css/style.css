@@ -1,0 +1,357 @@
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel&display=swap');
+
+body {
+    background-color: #f0e6d2;
+    background-size: cover;
+    font-family: 'Cinzel', serif;
+    color: #3a2c1a;
+    margin: 0;
+    padding: 20px;
+    
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    margin: 40px auto;
+    background-color: #f8f1e0;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border: 8px solid #d4b483;
+    
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+
+h1 {
+    
+    font-size: 3.5rem;
+    color: #5c3c10;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.header-decoration {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 20px;
+}
+
+.dragon-icon {
+    width: 200px;
+    height: 200px;
+    background-image: url('../img/11.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+
+.new-room-btn {
+    position: absolute;
+    top: 100px;
+    right: 20px;
+    background-color: #8b5a2b;
+    color: #f8f1e0;
+    border: 2px solid #5c3c10;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.new-room-btn:hover {
+    background-color: #a0784a;
+    transform: translateY(-2px);
+}
+
+.rooms-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.room {
+    background-color: #f8f1e0;
+    border: 15px solid transparent;
+    padding: 25px;
+    border-radius: 5px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.room::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.1;
+    z-index: 0;
+}
+
+.room-content {
+    position: relative;
+    z-index: 1;
+}
+
+.room-title {
+    font-family: 'MedievalSharp', cursive;
+    font-size: 1.8rem;
+    color: #5c3c10;
+    border-bottom: 2px solid #8b5a2b;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.room-info {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.players-label {
+    font-weight: bold;
+    color: #5c3c10;
+}
+
+.character-sheets {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+
+.character-btn {
+    background-color: #d4b483;
+    border: 1px solid #8b5a2b;
+    border-radius: 20px;
+    padding: 5px;
+    font-family: 'Cinzel', serif;
+    color: #3a2c1a;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 120px;
+    text-align: center;
+    margin: auto;
+    width: 50px;
+}
+
+.character-btn:hover {
+    background-color: #c0a070;
+    transform: translateY(-2px);
+}
+
+.enter-btn {
+    position: absolute;
+    top: 1px;
+    right: 15px;
+    background-color: #5c3c10;
+    color: #f8f1e0;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 20px;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    text-decoration: none;
+
+}
+
+.enter-btn:hover {
+    background-color: #7d5a2b;
+    transform: translateY(-2px);
+}
+
+/* Estilos para a página de visualização da ROOM */
+.room-detail-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    background-color: #f8f1e0;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border: 8px solid #d4b483;
+}
+
+.room-detail-header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.room-detail-title {
+    font-family: 'MedievalSharp', cursive;
+    font-size: 2.5rem;
+    color: #5c3c10;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.room-subtitle {
+    font-family: 'MedievalSharp', cursive;
+    font-size: 1.8rem;
+    color: #8b5a2b;
+    margin: 25px 0 15px;
+    border-bottom: 2px solid #d4b483;
+    padding-bottom: 8px;
+}
+
+.character-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 30px 0;
+}
+
+.character-list li {
+    background-color: #e8d9b5;
+    padding: 10px 20px;
+    margin-bottom: 8px;
+    border-radius: 20px;
+    border-left: 5px solid #8b5a2b;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.divider {
+    border-top: 2px dashed #d4b483;
+    margin: 30px 0;
+    opacity: 0.7;
+}
+
+/* Estilos para a tabela de personagens */
+.character-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 25px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.character-table th {
+    background-color: #5c3c10;
+    color: #f8f1e0;
+    padding: 12px 8px;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.5px;
+}
+
+.character-table td {
+    background-color: #f0e6d2;
+    padding: 10px 8px;
+    text-align: center;
+    border-bottom: 1px solid #d4b483;
+}
+
+.character-table tr:nth-child(even) td {
+    background-color: #e8d9b5;
+}
+
+.character-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Estilo para informações da sala */
+.room-stats {
+    background-color: #e8d9b5;
+    padding: 15px 25px;
+    border-radius: 8px;
+    margin: 25px 0;
+    font-size: 1.2rem;
+    text-align: center;
+    border: 1px solid #d4b483;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Botões */
+.back-btn {
+    display: inline-block;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px 25px;
+    background-color: #5c3c10;
+    color: #f8f1e0;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+ 
+}
+
+.back-btn:hover {
+    background-color: #7d5a2b;
+    transform: translateY(-2px);
+}
+
+.create_user {
+    display: inline-block;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px 25px;
+    background-color: #5c3c10;
+    color: #f8f1e0;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+
+    float: right;
+    margin-right: 0;
+
+}
+
+.create_user:hover {
+    background-color: #7d5a2b;
+    transform: translateY(-2px);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .room-detail-container {
+        padding: 20px;
+        margin: 20px auto;
+    }
+    
+    .room-detail-title {
+        font-size: 2rem;
+    }
+    
+    .room-subtitle {
+        font-size: 1.5rem;
+    }
+    
+    .character-table {
+        font-size: 0.9rem;
+    }
+    
+    .character-table th, 
+    .character-table td {
+        padding: 8px 5px;
+    }
+}
