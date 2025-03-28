@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/css/stayle.css" rel="stylesheet" />
+    <title>Cadastrar Ficha</title>
+</head>
+<body>
+
+    <section class = "book">
+
+        <h1>Cadastrar Ficha:</h1>
+
+        <form action="{{ url_for('mesa', mesa_id='new') }}" method="POST">
+
+            <label><strong>Room name:</strong></label>
+            <input type="text" name="nome_mesa" required><br>
+
+            <button type="submit">Criar</button>
+        </form>
+
+        <a href="{{ url_for('home') }}">
+            <button class="botao botao_mesa" >Voltar</button>
+        </a>
+
+    </section>
+    
+</body>
+</html>
