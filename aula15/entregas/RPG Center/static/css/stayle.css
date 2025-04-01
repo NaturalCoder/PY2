@@ -1,0 +1,293 @@
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel&display=swap');
+
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    list-style: none;
+    font-family: 'MedievalSharp', cursive;
+    
+}
+
+body {
+    background-color: #f0e6d2;
+    background-size: cover;
+    font-family: 'Cinzel', serif;
+    color: #3a2c1a;
+    margin: 0;
+    padding: 20px;
+    
+}
+
+.book {
+    max-width: 1200px;
+    margin: 40px auto;
+    background-color: #f8f1e0;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border: 8px solid #d4b483;
+}
+
+.cabeçario {
+    text-align: center;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px; /* Adiciona um pouco de espaço nas laterais */
+}
+
+.dragon-icon {
+    width: 200px;
+    height: 200px;
+    background-image: url('../img/11.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    
+}
+
+.dado-icon {
+    width: 200px;
+    height: 200px;
+    background-image: url('../img/1.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    
+}
+
+.botao {
+    background-color: #8b5a2b;
+    color: #f8f1e0;
+    border: 2px solid #5c3c10;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.botao:hover {
+    background-color: #a0784a;
+    transform: translateY(-2px);
+}
+
+.corpo {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os itens quebrem para a linha de baixo */
+    gap: 20px; /* Espaçamento entre os itens */
+    padding: 20px;
+    justify-content: center;
+}
+
+.mesas {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px;
+    width: 250px;
+    display: flex;
+    flex-direction: column; /* Organiza os elementos em coluna */
+    align-items: center;
+}
+
+.mesas ul {
+    list-style: none; /* Remove os marcadores da lista */
+    padding: 0;
+    margin: 0;
+    justify-content: left;
+    align-items: center;
+}
+
+.title {
+    padding-bottom: 10px;
+    border-bottom: 2px solid brown;
+    margin-bottom: 10px;
+}
+
+.center_botao {
+    display: flex;
+    
+}
+
+.botao_mesa {
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+
+.character-table {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 20px;
+    padding: 20px;
+    background-color: #f8f1e0;
+    border: 2px solid #d4b483;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.character-table h3 {
+    grid-column: 1 / -1;
+    font-family: 'MedievalSharp', cursive;
+    font-size: 1.4rem;
+    color: #5c3c10;
+    margin: 0 0 10px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #8b5a2b;
+}
+
+.character-table strong {
+    font-weight: bold;
+    color: #5c3c10;
+    display: inline-block;
+    min-width: 100px;
+}
+
+.character-table > br {
+    display: none;
+}
+
+.character-table ul {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.character-table ul li {
+    background-color: #e8d9b5;
+    padding: 10px;
+    border-radius: 4px;
+    border-left: 3px solid #8b5a2b;
+    margin: 0;
+}
+
+.character-table ul strong {
+    min-width: 70px;
+}
+
+/* Botão de Acessar posicionado corretamente */
+.character-table + a {
+    display: block;
+    text-align: right;
+    margin-bottom: 30px;
+}
+
+
+/* Estilo geral do formulário */
+.book form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+/* Títulos */
+.book h1 {
+    font-family: 'MedievalSharp', cursive;
+    font-size: 2.2rem;
+    color: #5c3c10;
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #8b5a2b;
+    padding-bottom: 10px;
+}
+
+.book h2 {
+    grid-column: 1 / -1;
+    font-family: 'MedievalSharp', cursive;
+    font-size: 1.8rem;
+    color: #8b5a2b;
+    margin: 20px 0 10px;
+    border-bottom: 1px solid #d4b483;
+    padding-bottom: 5px;
+}
+
+/* Campos do formulário */
+.book label {
+    font-weight: bold;
+    color: #5c3c10;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.book input[type="text"],
+.book input[type="number"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #8b5a2b;
+    border-radius: 4px;
+    background-color: #f8f1e0;
+    font-family: 'Cinzel', serif;
+    color: #3a2c1a;
+}
+
+/* Seção de ataques */
+#lista-ataques {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 0;
+    margin: 15px 0;
+}
+
+#lista-ataques li {
+    background-color: #e8d9b5;
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 4px solid #8b5a2b;
+    position: relative;
+}
+
+/* Botões */
+.botao.botao_mesa {
+    background-color: #5c3c10;
+    color: #f8f1e0;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-family: 'Cinzel', serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 5px 0;
+}
+
+.botao.botao_mesa:hover {
+    background-color: #7d5a2b;
+    transform: translateY(-2px);
+}
+
+/* Botões específicos */
+.book form > .botao.botao_mesa[type="submit"] {
+    grid-column: 1;
+    justify-self: start;
+}
+
+.book > a > .botao.botao_mesa {
+    grid-column: 2;
+    justify-self: end;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .book form {
+        grid-template-columns: 1fr;
+    }
+    
+    .book form > .botao.botao_mesa[type="submit"],
+    .book > a > .botao.botao_mesa {
+        grid-column: 1;
+        justify-self: stretch;
+        width: 100%;
+    }
+    
+    #lista-ataques {
+        grid-template-columns: 1fr;
+    }
+}

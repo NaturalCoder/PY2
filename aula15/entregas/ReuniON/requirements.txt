@@ -1,0 +1,16 @@
+# Dependências principais
+Flask==2.3.2
+Flask-SQLAlchemy==3.0.3
+Flask-Mail==0.9.1
+python-dotenv==1.0.0
+
+# Internacionalização e datas
+Babel==2.12.1
+python-dateutil==2.8.2
+
+# Segurança
+Werkzeug==2.3.6
+itsdangerous==2.1.2
+
+# Banco de dados
+SQLAlchemy==2.0.19

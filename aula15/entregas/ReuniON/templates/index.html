@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReuniOn</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/script.js" defer></script>
+</head>
+<body>
+    <h1>ReuniOn</h1>
+    <div class="tabs">
+        {% for m in range(1, 13) %}
+            <a href="/?year={{ year }}&month={{ m }}" class="tab{% if m == month %} active{% endif %}">{{ month_names[m-1] }}</a>
+        {% endfor %}
+    </div>
+    <div class="calendar">
+        {{ calendar|safe }}
+    </div>
+
+    <!-- Formulário modal -->
+    <div id="form-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <form id="event-form">
+                <label for="event-title">Título do Evento:</label>
+                <input type="text" id="event-title" name="event-title" required>
+                
+                <label for="event-time">Horário:</label>
+                <input type="time" id="event-time" name="event-time" required>
+                
+                <label for="event-location">Local:</label>
+                <input type="text" id="event-location" name="event-location" required>
+                
+                <label for="event-participants">Participantes:</label>
+                <input type="text" id="event-participants" name="event-participants">
+                
+                <button type="submit">Salvar</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

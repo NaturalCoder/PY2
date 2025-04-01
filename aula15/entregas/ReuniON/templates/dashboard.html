@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Bem-vindo, {{ user.name }}!</h1>
+
+<div class="tabs">
+    {% for m in range(1, 13) %}
+        <a href="{{ url_for('dashboard', year=year, month=m) }}" 
+           class="tab{% if m == month %} active{% endif %}">
+            {{ month_names[m-1] }}
+        </a>
+    {% endfor %}
+</div>
+
+<div class="calendar">
+    {{ calendar|safe }}
+</div>
+
+<!-- Modal para adicionar reunião (atualizado) -->
+<div id="form-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form id="event-form" action="{{ url_for('add_meeting') }}" method="POST">
+            <input type="hidden" id="event-date" name="date">
+            
+            <label for="event-title">Título:</label>
+            <input type="text" id="event-title" name="title" required>
+            
+            <label for="event-time">Horário:</label>
+            <input type="time" id="event-time" name="time" required>
+            
+            <label for="event-description">Descrição:</label>
+            <textarea id="event-description" name="description"></textarea>
+            
+            <label>Participantes:</label>
+            {% for user in User.query.all() %}
+                {% if user.id != user.id %}
+                <div>
+                    <input type="checkbox" id="user-{{ user.id }}" 
+                           name="participants" value="{{ user.id }}">
+                    <label for="user-{{ user.id }}">{{ user.name }}</label>
+                </div>
+                {% endif %}
+            {% endfor %}
+            
+            <button type="submit">Agendar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

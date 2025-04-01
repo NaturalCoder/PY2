@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/css/stayle.css" rel="stylesheet" />
+    <link href="../static/css/style.css" rel="stylesheet" />
+    <title>Mesas</title>
+</head>
+<body>
+    <section class = "book">
+        
+        <div class = "cabeçario">
+            <div class="dragon-icon" style="transform: scaleX(-1);"></div>
+            <h1>RPG Center</h1>
+
+            <a href="{{ url_for('novaMesa') }}">
+                <button class="botao" >New Room</button>
+            </a>
+
+        </div>
+
+        <section>
+
+            <ul class="corpo">
+                {% for mesa in mesas %}
+                    <li class="mesas">
+                        <h2 class = "title">{{ mesa.nome_mesa }}</h2>
+                        <ul>
+                            {% for ficha in mesa.fichas %}
+                                <li>{{ ficha.nome }}</li>
+                            {% endfor %}
+                        </ul>
+                        <div class="center_botao">
+                            <a href="{{ url_for('mesa', mesa_id=mesa.id) }}">
+                                <button class="botao botao_mesa" >Enter</button>
+                            </a>
+                        </div>    
+                    </li>
+                {% endfor %}
+            </ul>
+
+        </section>
+    </section>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Candidato</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4 mb-5">
+        <h2 class="mb-4">Cadastro de Candidato</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="row">
+                {% for field in form if field.type not in ['CSRFToken', 'SubmitField', 'BooleanField'] %}
+                <div class="col-md-6 mb-3" id="group-{{ field.name }}">
+                    {{ field.label }}
+                    {{ field(class="form-control") }}
+                    {% if field.errors %}
+                        <small class="text-danger">{{ field.errors[0] }}</small>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div class="form-check mt-3">
+                    {{ form.autorizo_dados(class="form-check-input") }}
+                    {{ form.autorizo_dados.label(class="form-check-label") }}
+                </div>
+
+                <div class="mt-4">
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function toggleField(triggerName, triggerValue, targetIds) {
+            const trigger = document.querySelector(`[name="${triggerName}"]`);
+            const targets = targetIds.map(id => document.getElementById(`group-${id}`));
+            const shouldShow = trigger?.value === triggerValue;
+
+            targets.forEach(el => {
+                if (el) el.style.display = shouldShow ? 'block' : 'none';
+            });
+        }
+
+        function setupFieldToggles() {
+            toggleField('estuda', 'Sim', ['curso', 'periodo']);
+            toggleField('parente_na_temon', 'Sim', ['parente_nome', 'parente_setor']);
+
+            document.querySelector('[name="estuda"]')?.addEventListener('change', () => {
+                toggleField('estuda', 'Sim', ['curso', 'periodo']);
+            });
+
+            document.querySelector('[name="parente_na_temon"]')?.addEventListener('change', () => {
+                toggleField('parente_na_temon', 'Sim', ['parente_nome', 'parente_setor']);
+            });
+        }
+
+        window.addEventListener("DOMContentLoaded", setupFieldToggles);
+    </script>
+</body>
+</html>

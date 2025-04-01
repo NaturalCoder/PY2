@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../static/css/stayle.css" rel="stylesheet" />
+    <link href="../static/css/style.css" rel="stylesheet" />
+    <title>{{ mesa.nome_mesa }}</title>
+</head>
+<body>
+
+    <section class = "book">
+        <h1>{{ mesa.nome_mesa }}</h1>
+
+        <h2>Fichas:</h2>
+
+        <a href="{{ url_for('novaFicha', mesa_id=mesa.id) }}">
+            <button class="botao botao_mesa">Criar nova ficha</button>
+        </a>
+
+        <ul>
+
+
+
+            
+            {% if fichas %}
+                {% for ficha in fichas %}
+                    <li class='character-table'>
+                        <h3>{{ ficha.nome_personagem }}</h3>
+                        <strong>Classe:</strong> {{ ficha.classe_personagem }} <br>
+                        <strong>Nível:</strong> {{ ficha.nivel_personagem }} <br>
+                        <strong>Força:</strong> {{ ficha.força_personagem }} <br>
+                        <strong>Inteligência:</strong> {{ ficha.inteligencia_personagem }} <br>
+                        <strong>Constituição:</strong> {{ ficha.constituicao_personagem }} <br>
+                        <strong>Armadura:</strong> {{ ficha.armadura_personagem }} <br>
+                        <strong>Ataques:</strong> <br>
+                        <ul>
+                            {% if ficha.ataques_personagem %}
+                                {% for ataque in ficha.ataques_personagem %}
+                                    <li>
+                                        <strong>Arma:</strong> {{ ataque.arma }} <br>
+                                        <strong>Bônus:</strong> {{ ataque.bonos }} <br>
+                                        <strong>Dado:</strong> d{{ ataque.dado }}
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                <li>Não há ataques definidos para esta ficha.</li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                    <a href="{{ url_for('ficha', ficha_id=ficha.id) }}">
+                        <button class="botao botao_mesa">Acessar</button>
+                    </a>
+                {% endfor %}
+            {% else %}
+                <p>Não há fichas associadas a esta mesa.</p>
+            {% endif %}
+        </ul>
+
+        <!-- Link para voltar à página inicial -->
+        <a href="{{ url_for('home') }}">
+            <button class="botao botao_mesa" >Voltar</button>
+        </a>
+
+    </section>
+
+</body>
+</html>

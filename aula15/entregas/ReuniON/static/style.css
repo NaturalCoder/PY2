@@ -1,0 +1,218 @@
+/* Estilo para o formulário modal */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 10px; /* Adiciona bordas arredondadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adiciona sombra */
+}
+
+.modal-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.modal-content label {
+    display: block;
+    margin: 10px 0 5px;
+    color: #333;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px; /* Adiciona bordas arredondadas */
+    box-sizing: border-box;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 10px;
+    background-color: #a82828f8;
+    color: #fff;
+    border: none;
+    border-radius: 5px; /* Adiciona bordas arredondadas */
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.modal-content button:hover {
+    background-color: #a82828f8;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+    flex-direction: column; /* Alinha o título e o calendário verticalmente */
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5em; /* Mantém o tamanho do título */
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tab {
+    padding: 10px 20px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #a82828f8;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.tab:hover {
+    background-color: #a82828f8;
+}
+
+.tab.active {
+    background-color: #a82828f8;
+    font-weight: bold;
+}
+
+.calendar {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center; /* Centraliza o calendário horizontalmente */
+    width: 95%; /* Mantém a largura */
+    height: 100%; /* Mantém a altura */
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+table {
+    width: 100%; /* Mantém a largura */
+    height: 99%; /* Mantém a altura */
+    border-collapse: collapse;
+}
+
+th{
+    border: 2px solid #000000;
+    padding: 0px; /* Mantém o espaçamento interno */
+    text-align: center; /* Alinha o texto no centro */
+    vertical-align: center; /* Alinha o texto  no centro */
+    font-size: 1em; /* Mantém o tamanho da fonte original */
+    color: #333;
+}
+
+td {
+    border: 1px solid #ddd;
+    padding: 10px; /* Mantém o espaçamento interno */
+    text-align: left; /* Alinha o texto à esquerda */
+    vertical-align: top; /* Alinha o texto ao topo */
+    font-size: 0.8em; /* Mantém o tamanho da fonte original */
+    color: #333;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+td {
+    background-color: #fff;
+    position: relative;
+}
+
+td:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+/* Estilo para o símbolo de "+" */
+.add-event {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 2em;
+    color: #a82828f8;
+    cursor: pointer;
+}
+
+/* Estilo para o formulário modal */
+.modal {
+    display: none; /* Esconde o modal por padrão */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Adicione este estilo ao seu arquivo CSS */
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #f4f4f4;
+    width: 100%;
+    position: relative;
+}
+
+.header h1 {
+    flex-grow: 1;
+    text-align: center;
+    margin: 0;
+}
+
+.logo {
+    position: absolute;
+        height: 10%;
+    right: 0px;
+    height: 300px; /* Aumente o tamanho conforme necessário */
+}
+
+
+
+
+
+
+

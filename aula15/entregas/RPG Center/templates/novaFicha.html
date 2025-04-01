@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/css/stayle.css" rel="stylesheet" />
+    <title>Cadastrar Ficha</title>
+</head>
+<body>
+
+    <section class = "book">
+
+        <h1>Cadastrar Ficha:</h1>
+
+        <form action="{{ url_for('ficha', ficha_id='new') }}" method="POST">
+            <input type="hidden" name="mesa_id" value="{{ mesa_id }}">
+            <div class="mb-3">    
+            <label><strong>Nome:</strong></label>
+            <input type="text" name="nome_personagem" required><br>
+            </div>
+
+            <div class="mb-3">    
+            <label><strong>Classe:</strong></label>
+            <input type="text" name="classe_personagem" required><br>
+            </div>
+
+            <div class="mb-3">    
+            <label><strong>Nível:</strong></label>
+            <input type="number" name="nivel_personagem" required><br>
+            </div>
+
+            <div class="mb-3">    
+            <label><strong>Força:</strong></label>
+            <input type="number" name="força_personagem" required><br>
+            </div>
+
+            <div class="mb-3">    
+            <label><strong>Inteligência:</strong></label>
+            <input type="number" name="inteligencia_personagem" required><br>
+            </div>
+
+            <div class="mb-3">    
+            <label><strong>Constituição:</strong></label>
+            <input type="number" name="constituicao_personagem" required><br>
+            </div>
+
+
+            <div class="mb-3">    
+            <label><strong>Armadura:</strong></label>
+            <input type="number" name="armadura_personagem" required><br>
+            </div>
+
+            <h2>Ataques:</h2>
+            <ul id="lista-ataques"></ul>
+
+            <button class="botao botao_mesa" type="button" onclick="adicionarAtaque()">Adicionar Ataque</button><br>
+
+            <button class="botao botao_mesa" type="submit">Criar</button>
+        </form>
+
+        <a href="{{ url_for('mesa', mesa_id=mesa_id) }}">
+            <button class="botao botao_mesa" >Voltar</button>
+        </a>
+    </section>
+    <script>
+        function adicionarAtaque() {
+            let listaAtaques = document.getElementById("lista-ataques");
+            let index = listaAtaques.querySelectorAll("li").length; // Conta os ataques existentes
+
+            let ataqueContainer = document.createElement("li");
+
+            ataqueContainer.innerHTML = `
+                <label><strong>Arma:</strong></label>
+                <input type="text" name="ataques[\${index}][arma]" required><br>
+
+                <label><strong>Bônus:</strong></label>
+                <input type="number" name="ataques[\${index}][bonos]" required><br>
+
+                <label><strong>Dado:</strong></label>
+                <input type="number" name="ataques[\${index}][dado]" required><br>
+
+                <button class="botao botao_mesa" type="button" onclick="removerAtaque(this)">Remover</button>
+            `;
+
+            listaAtaques.appendChild(ataqueContainer);
+        }
+
+        function removerAtaque(botao) {
+            botao.parentElement.remove();
+        }
+    </script>
+
+</body>
+</html>

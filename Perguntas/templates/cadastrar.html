@@ -10,15 +10,15 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Email</label>
-            <input type="email" class="form-control" name="email">
+            <input type="email" class="form-control" name="email" required>
         </div>
         <div class="mb-3">
             <label class="form-label">Idade</label>
-            <input type="number" class="form-control" name="idade">
+            <input type="number" class="form-control" name="idade" required>
         </div>
         <div class="mb-3">
             <label class="form-label">Pontos</label>
-            <input type="number" class="form-control" name="pontos">
+            <input type="number" class="form-control" name="pontos" required>
         </div>
         <button type="submit" class="btn btn-success">Salvar</button>
         <a href="{{ url_for('listar_alunos') }}" class="btn btn-secondary">Cancelar</a>
