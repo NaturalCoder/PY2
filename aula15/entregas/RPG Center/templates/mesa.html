@@ -15,7 +15,7 @@
         <h2>Fichas:</h2>
 
         <a href="{{ url_for('novaFicha', mesa_id=mesa.id) }}">
-            <button class="botao">Criar nova ficha</button>
+            <button class="botao botao_mesa">Criar nova ficha</button>
         </a>
 
         <ul>
@@ -25,7 +25,7 @@
             
             {% if fichas %}
                 {% for ficha in fichas %}
-                    <li>
+                    <li class='character-table'>
                         <h3>{{ ficha.nome_personagem }}</h3>
                         <strong>Classe:</strong> {{ ficha.classe_personagem }} <br>
                         <strong>Nível:</strong> {{ ficha.nivel_personagem }} <br>
@@ -49,7 +49,7 @@
                         </ul>
                     </li>
                     <a href="{{ url_for('ficha', ficha_id=ficha.id) }}">
-                        <button class="botao">Acessar</button>
+                        <button class="botao botao_mesa">Acessar</button>
                     </a>
                 {% endfor %}
             {% else %}
@@ -59,7 +59,7 @@
 
         <!-- Link para voltar à página inicial -->
         <a href="{{ url_for('home') }}">
-            <button class="botao" >Voltar</button>
+            <button class="botao botao_mesa" >Voltar</button>
         </a>
 
     </section>
