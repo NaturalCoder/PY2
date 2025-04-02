@@ -45,20 +45,58 @@
             });
         }
 
+        function validarDataNascimento() {
+            const campo = document.querySelector('[name="data_nascimento"]');
+            campo.addEventListener("change", () => {
+                const valor = campo.value;
+                const nascimento = new Date(valor);
+                const hoje = new Date();
+                const idade = hoje.getFullYear() - nascimento.getFullYear();
+
+                if (idade > 70 || idade < 16) {
+                    alert("A idade deve estar entre 16 e 70 anos.");
+                    campo.value = "";
+                }
+            });
+        }
+
         function setupFieldToggles() {
             toggleField('estuda', 'Sim', ['curso', 'periodo']);
-            toggleField('parente_na_temon', 'Sim', ['parente_nome', 'parente_setor']);
+            toggleField('parente_na_temon', 'Sim', ['nome_parente', 'setor_parente']);
 
             document.querySelector('[name="estuda"]')?.addEventListener('change', () => {
                 toggleField('estuda', 'Sim', ['curso', 'periodo']);
             });
 
             document.querySelector('[name="parente_na_temon"]')?.addEventListener('change', () => {
-                toggleField('parente_na_temon', 'Sim', ['parente_nome', 'parente_setor']);
+                toggleField('parente_na_temon', 'Sim', ['nome_parente', 'setor_parente']);
             });
         }
 
-        window.addEventListener("DOMContentLoaded", setupFieldToggles);
+        function setupCEP() {
+            const cepInput = document.querySelector('[name="cep"]');
+            const endereco = document.querySelector('[name="endereco"]');
+            const cidade = document.querySelector('[name="cidade_estado"]');
+
+            cepInput?.addEventListener('blur', async () => {
+                const cep = cepInput.value.replace(/\D/g, '');
+                if (cep.length === 8) {
+                    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                    const data = await response.json();
+
+                    if (!data.erro) {
+                        endereco.value = data.logradouro + ', ' + data.bairro;
+                        cidade.value = `${data.localidade} - ${data.uf}`;
+                    }
+                }
+            });
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            setupFieldToggles();
+            validarDataNascimento();
+            setupCEP();
+        });
     </script>
 </body>
 </html>
