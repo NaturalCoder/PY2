@@ -40,6 +40,10 @@ class Candidato(db.Model):
     periodo = db.Column(db.String(50))
     curso = db.Column(db.String(100))
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> repositorioprofe/main
     possui_deficiencia = db.Column(db.String(10))  # Sim/Não
     descricao_deficiencia = db.Column(db.String(255))
     data_emissao_rg = db.Column(db.Date)
