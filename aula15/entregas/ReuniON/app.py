@@ -183,11 +183,11 @@ def dashboard():
     
     meetings = Meeting.query.filter(
         Meeting.date >= datetime(year, month, 1),
-        Meeting.date < datetime(year, month + 1, 1) if month < 12 else datetime(year + 1, 1, 1)
+        Meeting.date < (datetime(year, month + 1, 1) if month < 12 else datetime(year + 1, 1, 1))
     ).all()
     
     return render_template('dashboard.html',
-                         user_log=user,
+                         user=user,
                          calendar=cal,
                          year=year,
                          month=month,

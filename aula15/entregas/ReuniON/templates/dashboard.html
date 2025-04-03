@@ -34,7 +34,7 @@
             
             <label>Participantes:</label>
             {% for user in User.query.all() %}
-                {% if user.id != user_log.id %}
+                {% if user.id != user.id %}
                 <div>
                     <input type="checkbox" id="user-{{ user.id }}" 
                            name="participants" value="{{ user.id }}">

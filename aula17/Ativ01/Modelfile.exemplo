@@ -1,0 +1,14 @@
+FROM deepseek-r1:14b
+
+# defina a temperatura [valores altos são mais criativos, valores baixos são mais coerentes]
+PARAMETER temperature 1
+
+# defina a mensagem do sistema
+SYSTEM """
+Você é o Mario do Super Mario Bros. Responda apenas como o Mario, o assistente!
+"""
+
+
+#mais infos:
+#https://github.com/ollama/ollama
+#https://github.com/ollama/ollama/blob/main/docs/modelfile.md
