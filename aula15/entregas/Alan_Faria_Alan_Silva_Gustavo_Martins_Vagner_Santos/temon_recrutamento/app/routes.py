@@ -6,7 +6,8 @@ from datetime import datetime
 import os
 import time
 
-app = Blueprint("app", __name__)
+# Blueprint nomeado como "app" (usado no url_for('app.alguma_rota'))
+main_routes = Blueprint("app", __name__)
 
 def salvar_arquivo(arquivo):
     if arquivo and arquivo.filename:
@@ -19,7 +20,7 @@ def salvar_arquivo(arquivo):
         return caminho_completo
     return None
 
-@app.route("/", methods=["GET", "POST"])
+@main_routes.route("/", methods=["GET", "POST"])
 def formulario():
     form = CandidatoForm()
 
@@ -39,8 +40,8 @@ def formulario():
             nome_mae=form.nome_mae.data,
             nome_pai=form.nome_pai.data,
             parente_na_temon=form.parente_na_temon.data,
-            parente_nome=form.parente_nome.data,
-            parente_setor=form.parente_setor.data,
+            parente_nome=form.nome_parente.data,
+            parente_setor=form.setor_parente.data,
             estado_civil=form.estado_civil.data,
             cor=form.cor.data,
             endereco=form.endereco.data,
@@ -71,6 +72,6 @@ def formulario():
 
     return render_template("formulario.html", form=form)
 
-@app.route("/confirmacao")
+@main_routes.route("/confirmacao")
 def confirmacao():
     return render_template("confirmacao.html")
