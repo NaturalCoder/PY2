@@ -1,4 +1,4 @@
-FROM exaone-deep:7.8b
+FROM gemma3:4b
 
 # defina a temperatura [valores altos são mais criativos, valores baixos são mais coerentes]
 PARAMETER temperature 1
