@@ -17,21 +17,30 @@
             <input type="text" class="form-control" name="nome" 
                    value="{{ contato.nome if contato }}" required>
         </div>
-        <div class="mb-3">
-            <label class="form-label">Telefone:</label>
-            <input type="tel" class="form-control" name="telefone" id="telefone"
-                   value="{{ contato.telefone | format_telefone if contato }}" required>
+        
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">E-mail:</label>
+                <input type="email" class="form-control" name="email" 
+                       value="{{ contato.email if contato }}">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Telefone:</label>
+                <input type="tel" class="form-control" name="telefone" id="telefone"
+                       value="{{ contato.telefone | format_telefone if contato }}" required>
+            </div>
         </div>
+
         <div class="mb-3">
-            <label class="form-label">E-mail:</label>
-            <input type="email" class="form-control" name="email" 
-                   value="{{ contato.email if contato }}">
+            <label class="form-label">Observações:</label>
+            <textarea class="form-control" name="observacoes" rows="7"
+                      required>{{ contato.observacoes if contato }}</textarea>
         </div>
+        
         <button type="submit" class="btn btn-primary">Salvar</button>
         <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancelar</a>
     </form>
 
-    <!-- Script para máscara de telefone corrigido -->
     <script>
     document.getElementById('telefone').addEventListener('input', function (e) {
         // Remove tudo que não é dígito e limita a 11 caracteres
