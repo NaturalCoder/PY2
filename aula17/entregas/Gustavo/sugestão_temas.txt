@@ -1,0 +1,17 @@
+   # Sugestões de temas para debates Android vs iPhone - copiar e colar no prompt do script
+
+    # "Por que celulares estão tão caros?",
+    # "Android é mais customizável que iPhone?",
+    # "Quem tem melhor autonomia de bateria?",
+    # "Quem tem a melhor câmera de verdade?",
+    # "Qual é mais fácil pro vovô aprender a usar?",
+    # "Por que o iPhone não vem com carregador?",
+    # "Quem tem os melhores emojis?",
+    # "Quem entrega mais atualizações úteis?",
+    # "Quem trava mais quando tá com pouca memória?",
+    # "Qual sistema roda melhor joguinho?",
+    # "Quem tem mais memes no WhatsApp?",
+    # "Por que iPhone é símbolo de status?",
+    # "Qual tem mais liberdade pro usuário?",
+    # "Por que Android vive com propaganda?",
+    # "Qual deles sofre mais bullying?"
